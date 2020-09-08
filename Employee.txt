@@ -1,0 +1,6 @@
+AF:790909-13-1234:Tan Mei Lee:012-12345678:tanml@bacs.my:Female:09-09-1979:Accountant:05-12-1998
+AF:987687-15-0989:ali:019-8887777:abc123@hotmail.com:male:08-08-1987:Accountant:4/9/2020
+PD:993818-17-2395:abu:017-7777777:aijsudhu@hotmail.com:male:09-09-1998:Producter:5-9-2020
+SM:800909-14-5051:Tan Lee Wah:017-3310668:tanlw@bacs.my:Male:09-09-1980:Sales Advisor:09-09-2003
+PD:090982-15-2132:Yong Zeh Ying:018-888-8888:yong@hotmail.com:female:06-01-2001:Producter:06-09-2020
+AF:990482-16-3231:abcj:018-3000000:aisjdiajsd@hotmail.com:m:08-08-2020:asdads:sda
