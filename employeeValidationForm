@@ -1,0 +1,101 @@
+#!/bin/bash
+invalidInput=y
+while [ "$invalidInput" = "y" ]
+do
+	invalidDateFrom=y
+	while [ "$invalidDateFrom" = "y" ]
+	do
+	echo -n "Please enter the Review Period (mm-yyyy): From ";read reviewPeriodFrom
+	if [[ "$reviewPeriodFrom" =~ ^[0-9]{2}-[0-9]{4}$ ]]
+	then invalidDateFrom=n
+	else
+	echo
+	echo "Please enter a valid date format!"
+	echo
+	fi
+	done
+
+	invalidDateTo=y
+	while [ "$invalidDateTo" = "y" ]
+	do
+	echo -n "Please enter the Review Period (mm-yyyy): To ";read reviewPeriodTo
+	 if [[ "$reviewPeriodTo" =~ ^[0-9]{2}-[0-9]{4}$ ]]
+        then invalidDateTo=n
+        else
+	echo
+        echo "Please enter a valid date format!"
+	echo
+        fi
+	done
+
+echo -n "Please enter the Employee's IC.Number(xxxxxx-xx-xxxx):";read icNum
+while IFS=: read -r department ic name phone email gender bdate jobtitle joindate
+do
+if [[ "$ic" == "$icNum" ]]
+then
+EName="$name"
+EJobTitle="$jobtitle"
+EDepartment="$department"
+EIC="$ic"
+fi
+done < Employee.txt
+
+echo "Employee Name(auto display): $EName"
+echo "Job Title(auto display): $EJobTitle"
+echo "Department(auto display): $EDepartment"
+
+if [ -n "$EIC" ] && [ -n "$reviewPeriodFrom" ] && [ -n "$reviewPeriodTo" ]
+then
+> "<$EIC>KPIResult.txt"
+echo "                         Employee Performance Review" >> "<$EIC>KPIResult.txt"
+echo "                       ===============================" >> "<$EIC>KPIResult.txt"
+echo >> "<$EIC>KPIResult.txt"
+echo "Employee IC. Number: $EIC" >> "<$EIC>KPIResult.txt"
+echo "Employee Name      : $EName" >> "<$EIC>KPIResult.txt"
+echo "Review Period      : $reviewPeriodFrom - $reviewPeriodTo" >> "<$EIC>KPIResult.txt"
+echo >> "<$EIC>KPIResult.txt"
+echo "==============================================================================" >> "<$EIC>KPIResult.txt"
+echo "KPI Criteria:       Rate of Obtained:     Comments:" >> "<$EIC>KPIResult.txt"
+echo "==============================================================================" >> "<$EIC>KPIResult.txt"
+echo
+invalidInput=y
+while [ "$invalidInput" = "y" ]
+do
+echo -n "Press (n) to continue to the Employee Performance Review Form or (q) to quit from the prompt and return to Human Resource Management Menu:";read choice
+echo
+	if [ "$choice" = "n" ] || [ "$choice" = "N" ]
+	then
+	file="<$EIC>KPIResult.txt"
+	export file
+	./employeePerformanceReviewForm
+	exit
+	elif [ "$choice" = "q" ] || [ "$choice" = "Q" ]
+	then ./menu
+	exit
+	else
+	echo "Invalid Input, Please enter a valid input eg. n,q"
+	fi
+echo
+done
+else
+echo
+echo "No Employee IC number found Or Incomplete input!"
+echo
+invalidIC=y
+while [ "$invalidIC" = "y" ]
+do
+echo
+echo -n "Press (n) to continue to enter Employee IC and review period or (q) to quit from prompt and return to Human Resource Management Menu:";read input
+echo
+if [ "$input" = "n" ] || [ "$choice" = "N" ] 
+then invalidIC=n
+elif [ "$input" = "q" ] || [ "$input" = "Q" ]
+then ./menu
+exit
+else
+echo "Invalid Input! Please enter a valid input eg. n or q"
+echo
+fi
+done
+fi
+done
