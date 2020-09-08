@@ -1,0 +1,112 @@
+#!/bin/bash
+
+addmore=y
+count=0
+totalRate=0
+while [ "$addmore" = "y" ]
+do
+echo -n "Please enter the KPI Code:";read KPIcode
+	KPIexist=y
+	while [ "$KPIexist" = "y" ]
+	do
+		while IFS=: read -r code evaluationCriteria description
+		do
+		if [[ "$KPIcode" == "$code" ]]
+		then
+		KPI="$evaluationCriteria"
+		sed -i "/$KPI/d" $file
+		KPIexist=n
+		fi
+		done < KPI.txt
+	done
+
+
+while IFS=: read -r code evaluationCriteria description
+do
+if [[ "$KPIcode" == "$code" ]]
+then
+KPI="$evaluationCriteria"
+fi
+done < KPI.txt
+
+echo "KPI- Key Performance Indicator(auto display): $KPI"
+echo -n "Please enter the Rate obtained(max 10 - min 0):";read rate
+echo -n "Comments (If any):";read comments
+echo
+if [ -n "$rate" ] && [ -n "$KPI" ] && [ -n "$comments" ]
+then 
+printf "%-27s %-14s %s\n" "$KPI" "$rate" "$comments" >> "$file"
+totalRate=$(expr $totalRate + $rate)
+count=$(expr $count + 1)
+
+invalidInput=y
+while [ "$invalidInput" = "y" ]
+do
+
+echo -n "Enter (y) to continue to enter the Employee's marks or (b) to return to the previous screen or (q) to quit to Human Resource Menu:";read ans
+echo
+	if [ "$ans" == "b" ] || [ "$ans" == "B" ]
+	then
+	averageRate=$(expr $totalRate / $count)
+	echo >> "$file"
+	echo "Average Performance Rating Score: $averageRate" >> "$file"
+	echo >> "$file"
+		if [ "$averageRate" -ge "8" ] && [ "$averageRate" -le "10" ]
+		then overallPerformance="Outstanding"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		elif [ "$averageRate" -ge "6" ] && [ "$averageRate" -le "7" ]
+		then overallPerformance="Very Satisfactory"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		elif [ "$averageRate" -ge "4" ] && [ "$averageRate" -le "5" ]
+		then overallPerformance="Satisfactory"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		elif [ "$averageRate" = "3"]
+		then overallPerformance="Unsatisfactory"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		elif [ "$averageRate" -ge "0" ] && [ "$averageRate" -le "2" ]
+		then overallPerformance="Poor"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		else 
+		echo "Invalid Mark Range"
+		fi
+		./PerformanceReview
+		exit
+	elif [ "$ans" = "q" ] || [ "$ans" = "Q" ]
+	then   
+	averageRate=$(expr $totalRate / $count)
+        echo >> "$file"
+        echo "Average Performance Rating Score: $averageRate" >> "$file"
+        echo >> "$file"
+		if [ "$averageRate" -ge "8" ] && [ "$averageRate" -le "10" ]
+		then overallPerformance="Outstanding"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		elif [ "$averageRate" -ge "6" ] && [ "$averageRate" -le "7" ]
+		then overallPerformance="Very Satisfactory"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		elif [ "$averageRate" -ge "4" ] && [ "$averageRate" -le "5" ]
+		then overallPerformance="Satisfactory"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		elif [ "$averageRate" = "3"]
+		then overallPerformance="Unsatisfactory"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		elif [ "$averageRate" -ge "0" ] && [ "$averageRate" -le "2" ]
+		then overallPerformance="Poor"
+		echo "Overall Staff Performance : $overallPerformance" >> "$file"
+		else 
+		echo "Invalid Mark Range"
+		fi 
+		./menu
+		exit
+	elif [ "$ans" = "y" ] || [ "$ans" = "Y" ]
+	then invalidInput=n
+	else 
+	echo "Invalid Input, Please enter a valid input eg. y,q,b" 
+	fi
+done
+else
+echo "Please fill up all the details or Input a valid KPI code"
+fi
+done
+
+
+
