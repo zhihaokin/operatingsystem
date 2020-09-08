@@ -1,0 +1,51 @@
+#!/bin/bash
+addmore=y
+while [ "$addmore" = "y" ]
+do
+count=1
+while IFS= read -r line; do
+	count=$(expr $count + 1)
+done < KPI.txt
+
+echo "Add New Key Performance Indicator(KPI) Form"
+echo "==========================================="
+if [ $count -lt 10 ]
+then
+KPIcode="KPI_0$count"
+echo "KPI Code (Auto Generated)   :$KPIcode"
+else
+KPIcode="KPI_$count"
+echo "KPI Code (Auto Generated)   :$KPIcode"
+fi
+	minlength=y
+	while [ "$minlength" = "y" ]
+	do
+	echo -n "KPI Evaluation Criteria     :";read evaluationCriteria
+	if [ ${#evaluationCriteria} -lt 3 ]
+	then echo " the minimum character that need to be enter is 3"
+	else
+	minlength=n
+	fi
+	done
+echo -n "Description                 :";read description
+if [ -n "$evaluationCriteria" ] && [ -n "$description" ]
+then echo "$KPIcode:$evaluationCriteria:$description" >> KPI.txt
+else echo "Incomplete Input"
+fi
+
+invalidInput=y
+while [ "$invalidInput" = "y" ]
+do
+echo -n "Add Another KPI (y) or (n)? :";read ans
+echo
+if [ "$ans" = "n" ] || [ "$ans" = "N" ]
+then ./menu
+exit
+elif [ "$ans" = "y" ] || [ "$ans" = "Y" ]
+then invalidInput=n
+
+else 
+echo "Invalid Input! Please enter a valid input eg. y,n"
+fi
+done
+done
