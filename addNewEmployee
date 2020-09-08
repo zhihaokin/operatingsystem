@@ -1,0 +1,115 @@
+#!/bin/bash
+invalid=y
+while [ "$invalid" = "y" ]
+do
+echo "Department Selection Menu"
+echo "=============================="
+echo "P - PD(Production Department)"
+echo "U - PU(Purchasing Department"
+echo "S - SM(Sales and Marketing Department)"
+echo "H - HR(Human Resource Department)"
+echo "A - AF(Accounting and Finance Department)"
+echo "I - IT(Information Technology Department)"
+echo
+echo "Q - Quit (Return to Human Resource Management Menu)"
+echo
+echo -n "Please select a choice:";read choice;
+case "$choice" in
+[pP]) department="PD"
+invalid=n;;
+[uU]) department="PU"
+invalid=n;;
+[sS]) department="SM"
+invalid=n;;
+[hH]) department="HR"
+invalid=n;;
+[aA]) department="AF"
+invalid=n;;
+[iI]) department="IT"
+invalid=n;;
+[qQ]) ./menu
+exit;;
+*) echo "Invalid Input!"
+esac
+done
+
+addmore=y
+while [ "$addmore" = "y" ]
+do
+echo "Add New Employee Form"
+echo "====================="
+echo
+
+
+
+
+invalidIC=y
+while [ "$invalidIC" = "y" ]
+do
+echo -n "Employee IC. Number:";read icNum;
+if [[ $icNum =~ ^[0-9]{6}-[0-9]{2}-[0-9]{4}$ ]]
+then invalidIC=n
+else echo
+echo "Invalid IC Format eg. 123456-12-1234"
+echo
+fi
+done
+echo -n "Employee Name      :";read name;
+
+invalidHP=y
+while [ "$invalidHP" = "y" ]
+do
+echo -n "Contact Number     :";read hpNum;
+if [[ $hpNum =~ ^[0-9]{3}-[0-9]{7}$ ]] || [[ $hpNum =~ ^[0-9]{3}-[0-9]{8}$ ]]
+then invalidHP=n
+else echo
+echo "Invalid Contact Number Format eg. 012-2222222 or 011-11111111"
+echo
+fi
+done
+
+
+
+
+echo -n "Email              :";read email;
+        invalidGender=y
+        while [ "$invalidGender" = "y" ]
+        do
+        echo -n "Gender(M,F)     :";read gender;
+        if [ $gender == "M" ] || [ $gender == "m" ]
+        then invalidGender=n
+        gender="Male"
+        elif [ $gender == "F" ] || [ $gender == "f" ]
+        then invalidGender=n
+        gender="Female"
+        else 
+        echo "Please enter a valid input eg. M or F"
+        fi
+        done
+
+echo -n "Birth Date         :";read bdate;
+echo -n "Job Title          :";read jobTitle;
+echo -n "Joined Date        :";read joinDate;
+echo
+if [ -n "$icNum" ] && [ -n "$name" ] && [ -n "$hpNum" ] && [ -n "$email" ] && [ -n "$gender" ] && [ -n "$bdate" ] && [ -n "$jobTitle" ] && [ -n "$joinDate" ]
+then echo "$department:$icNum:$name:$hpNum:$email:$gender:$bdate:$jobTitle:$joinDate" >> Employee.txt
+else echo "Incomplete Input"
+fi
+
+	invalidaddmore=y
+	while [ "$invalidaddmore" = "y" ]
+	do
+	echo -n "Add another Employee? (y) or (n) : ";read ans;
+	echo
+	if [ $ans = "n" ] || [ $ans = "N" ]
+	then  ./menu
+	exit
+	elif [ $ans = "y" ] || [ $ans = "Y" ]
+	then invalidaddmore=n
+	else
+	echo "Invalid Input! Please enter a valid Input eg. y,n"
+	fi
+	done
+
+done
+
