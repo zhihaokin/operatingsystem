@@ -1,0 +1,23 @@
+#!/bin/bash
+invalid=y
+while [ "$invalid" = "y" ]
+do
+echo "Human Resource Management Menu"
+echo "=============================="
+echo "E - Add New Employees"
+echo "K - Add New Key Performance Indicator(KPI)"
+echo "R - Performance Review"
+echo 
+echo "Q - Quit (exit from program)"
+echo
+echo -n "Please select a choice:";read choice;
+echo
+case "$choice" in
+[eE]) ./addNewEmployeesMenu;;
+[kK]) ./addNewKPI;;
+[rR]) ./PerformanceReview;;
+[qQ]) exit;;
+*) echo "Invalid Input! Please enter a valid alphabet eg. e,k,r,q"
+echo;;
+esac
+done
